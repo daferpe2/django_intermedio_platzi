@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Resultados de la encuensta platzi</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+     
+    <h1> {{question.question_text}}</h1>
+    <ul>
+        {% for choice in question.choice_set.all %}
+            <li> {{ choice.choice_text }} -- {{ choice.votes }} vote {{choice.votes|pluralize }}</li>
+        {% endfor %}
+    </ul>
+
+<br>
+<a href="{% url 'polls:index'%}">¿Te gustaria votar de nuevo?</a>
+
+</body>
+</html>
