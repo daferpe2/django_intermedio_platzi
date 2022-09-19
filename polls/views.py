@@ -1,13 +1,10 @@
-from audioop import reverse
-from multiprocessing import context
-from pyexpat import model
-from re import template
-from secrets import choice
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Question, Choice
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
+import datetime
 
 # Create your views here.
 
@@ -39,7 +36,7 @@ class IndexView(generic.ListView):
     context_object_name = 'latest_question_list'
     
     def get_queryset(self):
-        return Question.objects.order_by('-pub_date')[:5]
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5] # filtro de fecha ordenado con orden, sin incluir fechas de futuro
     
 class DetailView(generic.DetailView):
     model = Question
