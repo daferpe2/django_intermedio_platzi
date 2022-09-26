@@ -1,4 +1,6 @@
 import datetime
+from http import client
+from urllib import response
 
 from django.test import TestCase
 from django.utils import timezone
@@ -54,4 +56,39 @@ class QuestionIndexViewTest(TestCase):
         response = self.client.get(reverse('polls:index'))
         self.assertQuerysetEqual(response.context['latest_question_list'], [question])
 
-
+    def test_future_quesiton_and_past_question(self):
+        """Even if both an past future question extist, 
+            only past question are display
+        Keyword arguments:
+        argument -- description
+        Return: return_description
+        """
+        past_question = create_question(question_text='Past questions', days=-30)
+        future_question = create_question(question_text='Future questions', days=30)
+        response = self.client.get(reverse('polls:index'))
+        self.assertQuerysetEqual(response.context['latest_question_list'],
+                                 [past_question]
+                                 )
+    
+    def test_two_past_questions(self):
+        """The questions index page may display multiple questions.
+        
+        Keyword arguments:
+        argument -- description
+        Return: return_description
+        """
+        past_question1 = create_question(question_text='Past questions1', days=-30)
+        past_question2 = create_question(question_text='Past questions2', days=-40)
+        response = self.client.get(reverse('polls:index'))
+        self.assertQuerysetEqual(response.context['latest_question_list'],
+                                 [past_question1, past_question2]
+                                 )
+        
+    def test_two_future_questions(self):
+        """the question index pague may displey multiple questions in future"""
+        past_question = create_question(question_text='Past questions', days=30)
+        future_question = create_question(question_text='Future questions', days=40)
+        response = self.client.get(reverse('polls:index'))
+        self.assertQuerysetEqual(response.context['latest_question_list'],
+                                 []
+                                 )
