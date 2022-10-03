@@ -1,3 +1,5 @@
+from encodings import search_function
+from re import search
 from django.contrib import admin
 from .models import Question, Choice
 
@@ -10,8 +12,11 @@ class ChoiceInline(admin.StackedInline):# forma de crear linea  on StackedInline
 class QuestionAdmin(admin.ModelAdmin):
     fields = ['pub_date','question_text']
     inlines = [ChoiceInline]
-
-
+    list_display = ('question_text','pub_date', 'was_published_recently')
+    list_filert = ['pub_date']
+    search_fields = ['question_text']
+    #Agregando la clase creada
+    inlines = [ChoiceInline]
 admin.site.register(Question, QuestionAdmin)
 #admin.site.register(Choice)
 

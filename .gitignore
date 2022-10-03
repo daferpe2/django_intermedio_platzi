@@ -1,2 +1,3 @@
-/venv/
-/db.sqlit3/
+venv/
+db.sqlit3/
+images/
