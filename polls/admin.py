@@ -1,12 +1,21 @@
-"""from django.contrib import admin
+from django.contrib import admin
 from .models import Question, Choice
 
 # Register your models here.
 
-admin.site.register(Question)
-admin.site.register(Choice)"""
+class ChoiceInline(admin.StackedInline):# forma de crear linea  on StackedInline 
+    model = Choice
+    extra = 3
 
-from django.contrib import admin
+class QuestionAdmin(admin.ModelAdmin):
+    fields = ['pub_date','question_text']
+    inlines = [ChoiceInline]
+
+
+admin.site.register(Question, QuestionAdmin)
+#admin.site.register(Choice)
+
+"""from django.contrib import admin
 from .models import Question,Choice
 from django import forms
 from django.forms.models import BaseInlineFormSet
@@ -14,7 +23,7 @@ from django.forms.models import BaseInlineFormSet
 class AtLeastOneRequiredInlineFormSet(BaseInlineFormSet):
 
     def clean(self):
-        """Check that at least one choice has been entered."""
+        #Check that at least one choice has been entered.
         super(AtLeastOneRequiredInlineFormSet, self).clean()
         if any(self.errors):
             return
@@ -40,5 +49,5 @@ class QuestionAdmin(admin.ModelAdmin):
             instance.save()            
 
 
-admin.site.register(Question, QuestionAdmin)
+admin.site.register(Question, QuestionAdmin)"""
 #admin.site.register(Choice)
